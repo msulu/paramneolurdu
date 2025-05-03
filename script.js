@@ -9,15 +9,16 @@ function hesapla() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tarih, tutar })
     })
-    .then(res => {
+    .then(async res => {
+        const text = await res.text();  // Yanıtı düz metin olarak al
+        console.log("Gelen yanıt:", text);  // Konsola yazdır (debug için)
+
         if (!res.ok) {
-            return res.json().then(err => {
-                throw new Error(err.error || "Sunucu hatası");
-            });
+            throw new Error("Sunucu hatası: " + text);
         }
-        return res.json();
-    })
-    .then(data => {
+
+        const data = JSON.parse(text);  // JSON olarak parse et
+
         document.getElementById("sonuc").innerHTML = `
             <p><strong>Geçmiş Kur:</strong> ${data.usd_past_rate}</p>
             <p><strong>Bugünkü Kur:</strong> ${data.usd_today_rate}</p>
@@ -25,6 +26,7 @@ function hesapla() {
         `;
     })
     .catch(err => {
+        console.error("Hata oluştu:", err);
         document.getElementById("sonuc").innerHTML = `
             <p style="color:red;">Hata: ${err.message}</p>
         `;
