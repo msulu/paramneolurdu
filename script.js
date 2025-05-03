@@ -30,24 +30,31 @@ function hesapla() {
                 const plnPast = past.rates.PLN;
                 const plnToday = today.rates.PLN;
 
-                const eurChange = ((eurToday - eurPast) / eurPast * 100).toFixed(1);
-                const plnChange = ((plnToday - plnPast) / plnPast * 100).toFixed(1);
+                // Kur ters çevrilir: EUR/PLN → TL bazlı karşılığı için
+                const eurPastRev = 1 / eurPast;
+                const eurTodayRev = 1 / eurToday;
+                const eurChange = ((eurTodayRev - eurPastRev) / eurPastRev * 100).toFixed(1);
+
+                const plnPastRev = 1 / plnPast;
+                const plnTodayRev = 1 / plnToday;
+                const plnChange = ((plnTodayRev - plnPastRev) / plnPastRev * 100).toFixed(1);
+
+                const eurAmount = (usd_return * eurToday).toFixed(2);
+                const plnAmount = (usd_return * plnToday).toFixed(2);
 
                 const usdCikti = `
                     ${tarih} tarihinde ${tutar} TL ile dolar alsaydın, bugünkü karşılığı ${usd_return.toFixed(2)} TL olacaktı.
                     Bugünkü kur: ${data.usd_today_rate}, ${tarih} tarihindeki kur: ${data.usd_past_rate}, artış: %${usdChange}
                 `;
 
-                const eurAmount = (usd_return * eurToday).toFixed(2);
                 const eurCikti = `
                     ${tarih} tarihinde ${tutar} TL ile euro alsaydın, bugünkü karşılığı ${eurAmount} TL olacaktı.
-                    Bugünkü kur: ${eurToday}, ${tarih} tarihindeki kur: ${eurPast}, artış: %${eurChange}
+                    Bugünkü kur: ${eurTodayRev.toFixed(4)}, ${tarih} tarihindeki kur: ${eurPastRev.toFixed(4)}, artış: %${eurChange}
                 `;
 
-                const plnAmount = (usd_return * plnToday).toFixed(2);
                 const plnCikti = `
                     ${tarih} tarihinde ${tutar} TL ile zloty alsaydın, bugünkü karşılığı ${plnAmount} TL olacaktı.
-                    Bugünkü kur: ${plnToday}, ${tarih} tarihindeki kur: ${plnPast}, artış: %${plnChange}
+                    Bugünkü kur: ${plnTodayRev.toFixed(4)}, ${tarih} tarihindeki kur: ${plnPastRev.toFixed(4)}, artış: %${plnChange}
                 `;
 
                 document.getElementById("sonuc").innerHTML = `
