@@ -7,28 +7,34 @@ CORS(app)
 
 @app.route('/api/getirihesapla', methods=['POST'])
 def hesapla():
-    data = request.json
-    tarih = data['tarih']
-    tutar = float(data['tutar'])
+    try:
+        data = request.json
+        tarih = data['tarih']
+        tutar = float(data['tutar'])
+    except:
+        return jsonify({"error": "Geçersiz istek verisi"}), 400
 
     # 1. Geçmiş kuru çek
-    api_url = f"https://api.exchangerate.host/{tarih}?base=USD&symbols=TRY"
-    response = requests.get(api_url)
-    if response.status_code != 200:
-        return jsonify({"error": "Kur bilgisi alınamadı"}), 500
-
-    usd_past_rate = response.json()["rates"]["TRY"]
+    try:
+        api_url = f"https://api.exchangerate.host/{tarih}?base=USD&symbols=TRY"
+        response = requests.get(api_url)
+        usd_past_rate = response.json()["rates"]["TRY"]
+    except:
+        return jsonify({"error": "Geçmiş kur verisi alınamadı"}), 500
 
     # 2. Bugünkü kuru çek
-    today_url = "https://api.exchangerate.host/latest?base=USD&symbols=TRY"
-    response_today = requests.get(today_url)
-    if response_today.status_code != 200:
-        return jsonify({"error": "Bugünkü kur alınamadı"}), 500
-
-    usd_today_rate = response_today.json()["rates"]["TRY"]
+    try:
+        today_url = "https://api.exchangerate.host/latest?base=USD&symbols=TRY"
+        response_today = requests.get(today_url)
+        usd_today_rate = response_today.json()["rates"]["TRY"]
+    except:
+        return jsonify({"error": "Bugünkü kur verisi alınamadı"}), 500
 
     # 3. Getiri hesapla
-    usd_return = tutar / usd_past_rate * usd_today_rate
+    try:
+        usd_return = tutar / usd_past_rate * usd_today_rate
+    except:
+        return jsonify({"error": "Getiri hesaplanamadı"}), 500
 
     return jsonify({
         "usd": round(usd_return, 2),
