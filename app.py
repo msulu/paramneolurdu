@@ -14,23 +14,26 @@ def hesapla():
     except:
         return jsonify({"error": "Geçersiz istek verisi"}), 400
 
-    # 1. Geçmiş kuru çek
+    # Frankfurter.app geçmiş kuru USD -> TRY
     try:
-        api_url = f"https://api.exchangerate.host/{tarih}?base=USD&symbols=TRY"
+        api_url = f"https://api.frankfurter.app/{tarih}?from=USD&to=TRY"
         response = requests.get(api_url)
         usd_past_rate = response.json()["rates"]["TRY"]
     except:
         return jsonify({"error": "Geçmiş kur verisi alınamadı"}), 500
 
-    # 2. Bugünkü kuru çek
+    # Bugünkü kur için tarih yerine 'latest' yerine bugün'ün tarihi verilmeli çünkü Frankfurter'da /latest yok
+    from datetime import date
+    today = date.today().isoformat()
+
     try:
-        today_url = "https://api.exchangerate.host/latest?base=USD&symbols=TRY"
+        today_url = f"https://api.frankfurter.app/{today}?from=USD&to=TRY"
         response_today = requests.get(today_url)
         usd_today_rate = response_today.json()["rates"]["TRY"]
     except:
         return jsonify({"error": "Bugünkü kur verisi alınamadı"}), 500
 
-    # 3. Getiri hesapla
+    # Getiri hesapla
     try:
         usd_return = tutar / usd_past_rate * usd_today_rate
     except:
