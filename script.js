@@ -16,8 +16,8 @@ function hesapla() {
 
         const usdStr = `
             <div class="card">
-                <h3>USD 🇺🇸</h3>
-                <p>${tarih} tarihinde ${tutar} TL ile <strong>USD alsaydın</strong> (${(tutar / usd.past).toFixed(2)} USD)</p>
+                <h3>USD</h3>
+                <p>$<strong>USD alsaydın</strong> (${(tutar / usd.past).toFixed(2)} USD)</p>
                 <p><strong>${usd.return} TL</strong> olurdu</p>
                 <p>O zamanki kur: ${usd.past}</p>
                 <p>Güncel kur: ${usd.today}</p>
@@ -27,8 +27,8 @@ function hesapla() {
 
         const eurStr = `
             <div class="card">
-                <h3>EUR 🇪🇺</h3>
-                <p>${tarih} tarihinde ${tutar} TL ile <strong>EUR alsaydın</strong> (${(tutar / eur.past).toFixed(2)} EUR)</p>
+                <h3>EUR</h3>
+                <p><strong>EUR alsaydın</strong> (${(tutar / eur.past).toFixed(2)} EUR)</p>
                 <p><strong>${eur.return} TL</strong> olurdu</p>
                 <p>O zamanki kur: ${eur.past}</p>
                 <p>Güncel kur: ${eur.today}</p>
@@ -38,8 +38,8 @@ function hesapla() {
 
         const plnStr = `
             <div class="card">
-                <h3>PLN 🇵🇱</h3>
-                <p>${tarih} tarihinde ${tutar} TL ile <strong>PLN alsaydın</strong> (${(tutar / pln.past).toFixed(2)} PLN)</p>
+                <h3>PLN</h3>
+                <p><strong>PLN alsaydın</strong> (${(tutar / pln.past).toFixed(2)} PLN)</p>
                 <p><strong>${pln.return} TL</strong> olurdu</p>
                 <p>O zamanki kur: ${pln.past}</p>
                 <p>Güncel kur: ${pln.today}</p>
