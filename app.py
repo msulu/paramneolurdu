@@ -1,9 +1,26 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+from datetime import date
 
 app = Flask(__name__)
 CORS(app)
+
+def get_exchange_rate(date_str, from_currency):
+    url = f"https://api.frankfurter.app/{date_str}?from={from_currency}&to=TRY"
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()["rates"]["TRY"]
+
+def hesapla_kar(tutar, gecmis_kur, bugun_kur):
+    miktar = tutar / gecmis_kur * bugun_kur
+    artıs = (bugun_kur - gecmis_kur) / gecmis_kur * 100
+    return {
+        "past": round(gecmis_kur, 4),
+        "today": round(bugun_kur, 4),
+        "return": round(miktar, 2),
+        "change": round(artıs, 2)
+    }
 
 @app.route('/api/getirihesapla', methods=['POST'])
 def hesapla():
@@ -14,36 +31,25 @@ def hesapla():
     except:
         return jsonify({"error": "Geçersiz istek verisi"}), 400
 
-    # Frankfurter.app geçmiş kuru USD -> TRY
-    try:
-        api_url = f"https://api.frankfurter.app/{tarih}?from=USD&to=TRY"
-        response = requests.get(api_url)
-        usd_past_rate = response.json()["rates"]["TRY"]
-    except:
-        return jsonify({"error": "Geçmiş kur verisi alınamadı"}), 500
-
-    # Bugünkü kur için tarih yerine 'latest' yerine bugün'ün tarihi verilmeli çünkü Frankfurter'da /latest yok
-    from datetime import date
     today = date.today().isoformat()
 
     try:
-        today_url = f"https://api.frankfurter.app/{today}?from=USD&to=TRY"
-        response_today = requests.get(today_url)
-        usd_today_rate = response_today.json()["rates"]["TRY"]
-    except:
-        return jsonify({"error": "Bugünkü kur verisi alınamadı"}), 500
+        usd_past = get_exchange_rate(tarih, "USD")
+        usd_today = get_exchange_rate(today, "USD")
+        eur_past = get_exchange_rate(tarih, "EUR")
+        eur_today = get_exchange_rate(today, "EUR")
+        pln_past = get_exchange_rate(tarih, "PLN")
+        pln_today = get_exchange_rate(today, "PLN")
 
-    # Getiri hesapla
-    try:
-        usd_return = tutar / usd_past_rate * usd_today_rate
-    except:
-        return jsonify({"error": "Getiri hesaplanamadı"}), 500
+        result = {
+            "usd": hesapla_kar(tutar, usd_past, usd_today),
+            "eur": hesapla_kar(tutar, eur_past, eur_today),
+            "pln": hesapla_kar(tutar, pln_past, pln_today),
+        }
+        return jsonify(result)
 
-    return jsonify({
-        "usd": round(usd_return, 2),
-        "usd_past_rate": round(usd_past_rate, 2),
-        "usd_today_rate": round(usd_today_rate, 2)
-    })
+    except Exception as e:
+        return jsonify({"error": f"Kur verileri alınamadı: {str(e)}"}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
