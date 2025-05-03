@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
+    <meta charset="UTF-8">
     <title>Param Ne Olurdu?</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Hangi tarihte kaç TL paran vardı?</h1>
-
-    <input type="date" id="tarih" value="2020-01-01">
-    <input type="number" id="tutar" value="1001" placeholder="Tutar">
-    <button onclick="hesapla()">Hesapla</button>
-    <div id="sonuc"></div>
+    <div class="container">
+        <h1>Hangi tarihte kaç TL paran vardı?</h1>
+        <div class="input-group">
+            <input type="date" id="tarih" value="2020-01-01">
+            <input type="number" id="tutar" value="1000" placeholder="Tutar">
+            <button onclick="hesapla()">Hesapla</button>
+        </div>
+        <div id="sonuc"></div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
