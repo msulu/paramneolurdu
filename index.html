@@ -4,18 +4,36 @@
     <meta charset="UTF-8">
     <title>Param Ne Olurdu?</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>Hangi tarihte kaç TL paran vardı?</h1>
         <div class="input-group">
-            <input type="date" id="tarih" value="2020-01-01">
+            <input type="text" id="tarih" placeholder="Tarih (gg/aa/yyyy)">
             <input type="number" id="tutar" value="1000" placeholder="Tutar">
             <button onclick="hesapla()">Hesapla</button>
         </div>
         <div id="sonuc"></div>
+        <canvas id="grafik" style="margin-top: 30px;"></canvas>
     </div>
+
+    <!-- Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#tarih", {
+            dateFormat: "d/m/Y",
+            defaultDate: "01/01/2025",
+            locale: { firstDayOfWeek: 1 }
+        });
+    </script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Data labels plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <!-- Main JS -->
     <script src="script.js"></script>
 </body>
 </html>
