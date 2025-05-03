@@ -14,31 +14,40 @@ function hesapla() {
         const eur = data.eur;
         const pln = data.pln;
 
-        const sonucHTML = `
+        const usdStr = `
             <div class="card">
                 <h3>USD 🇺🇸</h3>
-                <p>${tarih} tarihinde ${tutar} TL → <strong>${usd.return} TL</strong> (${(tutar / usd.past).toFixed(2)} USD)</p>
+                <p>${tarih} tarihinde ${tutar} TL ile <strong>USD alsaydın</strong> (${(tutar / usd.past).toFixed(2)} USD)</p>
+                <p><strong>${usd.return} TL</strong> olurdu</p>
                 <p>O zamanki kur: ${usd.past}</p>
                 <p>Güncel kur: ${usd.today}</p>
                 <p>Artış oranı: %${usd.change}</p>
             </div>
+        `;
+
+        const eurStr = `
             <div class="card">
                 <h3>EUR 🇪🇺</h3>
-                <p>${tarih} tarihinde ${tutar} TL → <strong>${eur.return} TL</strong> (${(tutar / eur.past).toFixed(2)} EUR)</p>
+                <p>${tarih} tarihinde ${tutar} TL ile <strong>EUR alsaydın</strong> (${(tutar / eur.past).toFixed(2)} EUR)</p>
+                <p><strong>${eur.return} TL</strong> olurdu</p>
                 <p>O zamanki kur: ${eur.past}</p>
                 <p>Güncel kur: ${eur.today}</p>
                 <p>Artış oranı: %${eur.change}</p>
             </div>
+        `;
+
+        const plnStr = `
             <div class="card">
                 <h3>PLN 🇵🇱</h3>
-                <p>${tarih} tarihinde ${tutar} TL → <strong>${pln.return} TL</strong> (${(tutar / pln.past).toFixed(2)} PLN)</p>
+                <p>${tarih} tarihinde ${tutar} TL ile <strong>PLN alsaydın</strong> (${(tutar / pln.past).toFixed(2)} PLN)</p>
+                <p><strong>${pln.return} TL</strong> olurdu</p>
                 <p>O zamanki kur: ${pln.past}</p>
                 <p>Güncel kur: ${pln.today}</p>
                 <p>Artış oranı: %${pln.change}</p>
             </div>
         `;
 
-        document.getElementById("sonuc").innerHTML = sonucHTML;
+        document.getElementById("sonuc").innerHTML = usdStr + eurStr + plnStr;
     })
     .catch(err => {
         console.error("Hata:", err);
