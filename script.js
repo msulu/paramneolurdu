@@ -3,7 +3,7 @@ function hesapla() {
     const tutar = document.getElementById("tutar").value;
 
     // Buraya kendi Replit linkini yapıştırmalısın
-    const backendURL = "https://your-replit-name.repl.co/api/getirihesapla";
+    const backendURL = "https://8a3b78ea-8bef-474b-a0c1-0aa774465fd2-00-35tt28tt6sl64.kirk.replit.dev/api/getirihesapla";
 
     fetch(backendURL, {
         method: "POST",
