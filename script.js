@@ -9,7 +9,14 @@ function hesapla() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tarih, tutar })
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            return res.json().then(err => {
+                throw new Error(err.error || "Sunucu hatası");
+            });
+        }
+        return res.json();
+    })
     .then(data => {
         document.getElementById("sonuc").innerHTML = `
             <p><strong>Geçmiş Kur:</strong> ${data.usd_past_rate}</p>
@@ -17,7 +24,9 @@ function hesapla() {
             <p><strong>Getiri:</strong> ${data.usd} TL</p>
         `;
     })
-    .catch(() => {
-        document.getElementById("sonuc").innerText = "Hesaplama sırasında hata oluştu.";
+    .catch(err => {
+        document.getElementById("sonuc").innerHTML = `
+            <p style="color:red;">Hata: ${err.message}</p>
+        `;
     });
 }
