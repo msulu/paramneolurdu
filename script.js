@@ -1,6 +1,6 @@
 function hesapla() {
     const tarih = document.getElementById("tarih").value;
-    const tutar = document.getElementById("tutar").value;
+    const tutar = parseFloat(document.getElementById("tutar").value);
     const backendURL = "https://paramneolurdu.onrender.com/api/getirihesapla";
     const bugun = new Date().toISOString().split("T")[0];
 
@@ -25,8 +25,6 @@ function hesapla() {
                 fetch(pastRatesURL).then(r => r.json()),
                 fetch(todayRatesURL).then(r => r.json())
             ]).then(([past, today]) => {
-                if (!past.rates || !today.rates) throw new Error("Döviz kurları alınamadı.");
-
                 const eurPast = past.rates.EUR;
                 const eurToday = today.rates.EUR;
                 const plnPast = past.rates.PLN;
@@ -35,23 +33,27 @@ function hesapla() {
                 const eurChange = ((eurToday - eurPast) / eurPast * 100).toFixed(1);
                 const plnChange = ((plnToday - plnPast) / plnPast * 100).toFixed(1);
 
+                const usdCikti = `
+                    ${tarih} tarihinde ${tutar} TL ile dolar alsaydın, bugünkü karşılığı ${usd_return.toFixed(2)} TL olacaktı.
+                    Bugünkü kur: ${data.usd_today_rate}, ${tarih} tarihindeki kur: ${data.usd_past_rate}, artış: %${usdChange}
+                `;
+
                 const eurAmount = (usd_return * eurToday).toFixed(2);
+                const eurCikti = `
+                    ${tarih} tarihinde ${tutar} TL ile euro alsaydın, bugünkü karşılığı ${eurAmount} TL olacaktı.
+                    Bugünkü kur: ${eurToday}, ${tarih} tarihindeki kur: ${eurPast}, artış: %${eurChange}
+                `;
+
                 const plnAmount = (usd_return * plnToday).toFixed(2);
+                const plnCikti = `
+                    ${tarih} tarihinde ${tutar} TL ile zloty alsaydın, bugünkü karşılığı ${plnAmount} TL olacaktı.
+                    Bugünkü kur: ${plnToday}, ${tarih} tarihindeki kur: ${plnPast}, artış: %${plnChange}
+                `;
 
                 document.getElementById("sonuc").innerHTML = `
-                    <p><strong>${tarih}</strong> tarihinde ${tutar} TL ile dolar alsaydın,</p>
-                    <p>bugün <strong>${bugun}</strong> itibariyle karşılığı:</p>
-                    <ul>
-                        <li><strong>USD:</strong> ${usd_return} TL 
-                            <br>Kur: ${data.usd_past_rate} → ${data.usd_today_rate} 
-                            (<strong>${usdChange}%</strong>)</li>
-                        <li><strong>EUR:</strong> ${eurAmount} TL 
-                            <br>Kur: ${eurPast} → ${eurToday} 
-                            (<strong>${eurChange}%</strong>)</li>
-                        <li><strong>PLN:</strong> ${plnAmount} TL 
-                            <br>Kur: ${plnPast} → ${plnToday} 
-                            (<strong>${plnChange}%</strong>)</li>
-                    </ul>
+                    <p>${usdCikti}</p><br>
+                    <p>${eurCikti}</p><br>
+                    <p>${plnCikti}</p>
                 `;
             });
         })
@@ -63,3 +65,8 @@ function hesapla() {
         });
     } catch (err) {
         console.error("Kritik Hata:", err);
+        document.getElementById("sonuc").innerHTML = `
+            <p style="color:red;">Beklenmeyen bir hata oluştu.</p>
+        `;
+    }
+}
