@@ -16,8 +16,7 @@ function hesapla() {
 
         const usdStr = `
             <div class="card">
-                <h3>USD</h3>
-                <p>$<strong>USD alsaydın</strong> (${(tutar / usd.past).toFixed(2)} USD)</p>
+                <h3><strong>USD alsaydın</strong> (${(tutar / usd.past).toFixed(2)} USD)</h3>
                 <p><strong>${usd.return} TL</strong> olurdu</p>
                 <p>O zamanki kur: ${usd.past}</p>
                 <p>Güncel kur: ${usd.today}</p>
