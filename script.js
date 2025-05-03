@@ -14,18 +14,31 @@ function hesapla() {
         const eur = data.eur;
         const pln = data.pln;
 
-        const bugun = new Date().toISOString().split("T")[0];
-
-        document.getElementById("sonuc").innerHTML = `
-            <p>${tarih} tarihinde ${tutar} TL ile <strong>dolar</strong> alsaydın, bugünkü karşılığı <strong>${usd.return} TL</strong> olacaktı.<br>
-            Bugünkü kur: ${usd.today}, ${tarih} tarihindeki kur: ${usd.past}, artış: %${usd.change}</p><br>
-
-            <p>${tarih} tarihinde ${tutar} TL ile <strong>euro</strong> alsaydın, bugünkü karşılığı <strong>${eur.return} TL</strong> olacaktı.<br>
-            Bugünkü kur: ${eur.today}, ${tarih} tarihindeki kur: ${eur.past}, artış: %${eur.change}</p><br>
-
-            <p>${tarih} tarihinde ${tutar} TL ile <strong>zloty</strong> alsaydın, bugünkü karşılığı <strong>${pln.return} TL</strong> olacaktı.<br>
-            Bugünkü kur: ${pln.today}, ${tarih} tarihindeki kur: ${pln.past}, artış: %${pln.change}</p>
+        const sonucHTML = `
+            <div class="card">
+                <h3>USD 🇺🇸</h3>
+                <p>${tarih} tarihinde ${tutar} TL → <strong>${usd.return} TL</strong> (${(tutar / usd.past).toFixed(2)} USD)</p>
+                <p>O zamanki kur: ${usd.past}</p>
+                <p>Güncel kur: ${usd.today}</p>
+                <p>Artış oranı: %${usd.change}</p>
+            </div>
+            <div class="card">
+                <h3>EUR 🇪🇺</h3>
+                <p>${tarih} tarihinde ${tutar} TL → <strong>${eur.return} TL</strong> (${(tutar / eur.past).toFixed(2)} EUR)</p>
+                <p>O zamanki kur: ${eur.past}</p>
+                <p>Güncel kur: ${eur.today}</p>
+                <p>Artış oranı: %${eur.change}</p>
+            </div>
+            <div class="card">
+                <h3>PLN 🇵🇱</h3>
+                <p>${tarih} tarihinde ${tutar} TL → <strong>${pln.return} TL</strong> (${(tutar / pln.past).toFixed(2)} PLN)</p>
+                <p>O zamanki kur: ${pln.past}</p>
+                <p>Güncel kur: ${pln.today}</p>
+                <p>Artış oranı: %${pln.change}</p>
+            </div>
         `;
+
+        document.getElementById("sonuc").innerHTML = sonucHTML;
     })
     .catch(err => {
         console.error("Hata:", err);
