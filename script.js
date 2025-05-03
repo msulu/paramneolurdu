@@ -2,8 +2,7 @@ function hesapla() {
     const tarih = document.getElementById("tarih").value;
     const tutar = document.getElementById("tutar").value;
 
-    // Buraya kendi Replit linkini yapıştırmalısın
-    const backendURL = "https://paramneolurdu.onrender.com/api/getirihesapla";
+    const backendURL = "https://senin-render-url.onrender.com/api/getirihesapla";
 
     fetch(backendURL, {
         method: "POST",
@@ -12,9 +11,13 @@ function hesapla() {
     })
     .then(res => res.json())
     .then(data => {
-        document.getElementById("sonuc").innerText = `USD Return: ${data.usd} TL`;
+        document.getElementById("sonuc").innerHTML = `
+            <p><strong>Geçmiş Kur:</strong> ${data.usd_past_rate}</p>
+            <p><strong>Bugünkü Kur:</strong> ${data.usd_today_rate}</p>
+            <p><strong>Getiri:</strong> ${data.usd} TL</p>
+        `;
     })
-    .catch(err => {
+    .catch(() => {
         document.getElementById("sonuc").innerText = "Hesaplama sırasında hata oluştu.";
     });
 }
