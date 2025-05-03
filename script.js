@@ -2,7 +2,7 @@ function hesapla() {
     const tarih = document.getElementById("tarih").value;
     const tutar = document.getElementById("tutar").value;
 
-    const backendURL = "https://senin-render-url.onrender.com/api/getirihesapla";
+    const backendURL = "https://paramneolurdu.onrender.com/api/getirihesapla";
 
     fetch(backendURL, {
         method: "POST",
