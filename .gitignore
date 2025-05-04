@@ -1,0 +1,11 @@
+# Python ortamı
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Ortam değişkenleri
+.env
+
+# Mac sistem dosyaları
+.DS_Store
